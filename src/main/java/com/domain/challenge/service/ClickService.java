@@ -3,6 +3,8 @@ package com.domain.challenge.service;
 import com.domain.challenge.dto.ClickDto;
 import com.domain.challenge.model.Click;
 import com.domain.challenge.repository.ClickRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,18 @@ public class ClickService {
 
   private final ClickRepository clickRepository;
 
-  public void save(ClickDto clickDto) {
-
-    clickRepository.save(Click.builder()
-            .revenue(clickDto.getRevenue())
-            .impressionId(clickDto.getImpressionId())
-        .build());
+  public void saveAll(List<ClickDto> clickDtoList) {
+    var clicks = clickDtoList.stream()
+        .map(this::convert)
+        .toList();
+    clickRepository.saveAll(clicks);
   }
 
-
+  private Click convert(ClickDto clickDto) {
+    return Click.builder()
+        .impressionId(clickDto.getImpressionId())
+        .revenue(clickDto.getRevenue())
+        .build();
+  }
 
 }

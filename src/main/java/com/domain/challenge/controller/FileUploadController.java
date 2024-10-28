@@ -1,7 +1,9 @@
 package com.domain.challenge.controller;
 
 import com.domain.challenge.common.JsonFileParser;
+import com.domain.challenge.dto.ClickDto;
 import com.domain.challenge.dto.ImpressionDto;
+import com.domain.challenge.service.ClickService;
 import com.domain.challenge.service.ImpressionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +23,16 @@ public class FileUploadController {
 
   private final JsonFileParser jsonFileParser;
   private final ImpressionService impressionService;
+  private final ClickService clickService;
 
   @PostMapping
-  public ResponseEntity<String> uploadFiles(@RequestParam("impression") MultipartFile impression,
-      @RequestParam("click") MultipartFile click) {
-      log.info("Received files {}, {}", impression.getName(), click.getName());
-      var impressionList = jsonFileParser.convertTo(impression, ImpressionDto.class);
-      var clickList = jsonFileParser.convertTo(impression, ImpressionDto.class);
-      impressionService.save(impressionList.get(0));
+  public ResponseEntity<String> uploadFiles(@RequestParam("impression") MultipartFile impressionFile,
+      @RequestParam("click") MultipartFile clickFile) {
+      log.info("Received files {}, {}", impressionFile.getName(), clickFile.getName());
+      var impressionList = jsonFileParser.convertTo(impressionFile, ImpressionDto.class);
+      var clickList = jsonFileParser.convertTo(clickFile, ClickDto.class);
+      impressionService.saveAll(impressionList);
+      clickService.saveAll(clickList);
       return new ResponseEntity<>("Files are processed successfully", HttpStatus.CREATED);
   }
 
