@@ -2,6 +2,7 @@ package com.domain.challenge.controller;
 
 import com.domain.challenge.common.JsonFileParser;
 import com.domain.challenge.dto.ImpressionDto;
+import com.domain.challenge.service.ImpressionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUploadController {
 
   private final JsonFileParser jsonFileParser;
+  private final ImpressionService impressionService;
 
   @PostMapping
   public ResponseEntity<String> uploadFiles(@RequestParam("impression") MultipartFile impression,
@@ -26,9 +28,8 @@ public class FileUploadController {
       log.info("Received files {}, {}", impression.getName(), click.getName());
       var impressionList = jsonFileParser.convertTo(impression, ImpressionDto.class);
       var clickList = jsonFileParser.convertTo(impression, ImpressionDto.class);
-
+      impressionService.save(impressionList.get(0));
       return new ResponseEntity<>("Files are processed successfully", HttpStatus.CREATED);
-
   }
 
 }
