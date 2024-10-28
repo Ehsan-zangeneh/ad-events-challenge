@@ -1,7 +1,7 @@
 package com.domain.challenge.controller;
 
 import com.domain.challenge.common.JsonFileParser;
-import com.domain.challenge.model.ImpressionDto;
+import com.domain.challenge.dto.ImpressionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
