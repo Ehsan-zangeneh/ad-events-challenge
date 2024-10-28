@@ -20,4 +20,4 @@ next you can use postman to upload two json file on "http://localhost:8080/chall
 
 the files are processed and saved in the DB you can check it (tables: impression, click)
 
-********This application needs some improvement regarding bulk insertion and validation.******
+********This application still needs improvement regarding bulk insertion, validation, Exception handling, etc.******
